@@ -23,6 +23,11 @@
 
 }
 
+.lista-filmes img:hover{
+    opacity: 0.6;
+
+}
+
 @media(max-width: 1071px){
     .lista-filmes article{
         width: 20%;
