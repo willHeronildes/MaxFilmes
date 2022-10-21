@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import api from '../../services/api'
 import './filme-info.css';
@@ -8,6 +8,7 @@ import { Ring } from 'react-awesome-spinners';
 
 function Filmes (){
     const { id } = useParams();
+    const navigation = useNavigate();
     const [filmes, setFilmes] = useState([]);
     const [loading, setLoading] = useState(true);
     
@@ -25,15 +26,36 @@ function Filmes (){
                 setLoading(false);
              })
              .catch(()=>{
-
+                navigation("/", { replace: true });
+                return;
              })
          }
          loadFilmes();
 
          return()=>{
-
+            console.log("COMPONENTE FOI DESMONTADO")
          }
-    }, [])
+    }, [navigation, id])
+
+function salvarFilme(){
+   //Pegando os Filmes na lista 
+     const minhaLista = localStorage.getItem("@maxfilmes");
+
+   //Verificando se a lista existe caso seja false cria uma vazia
+     let filmesSalvos = JSON.parse(minhaLista) || [];
+     
+   //Comparando se o filme é dulicado
+     const hasFilme = filmesSalvos.some((filmesSalvo)=> filmesSalvo.id === filmes.id)
+
+     if(hasFilme){
+         alert("ESSE FILME JÁ EXISTE");
+         return;
+     }
+
+     filmesSalvos.push(filmes);
+     localStorage.setItem("@maxfilmes", JSON.stringify(filmesSalvos));
+     alert("Filme Salvo")
+}      
 if(loading){
     return(
         <div className='loading'>
@@ -41,7 +63,8 @@ if(loading){
             <span>Carregando...</span>
         </div>
         )
-    }    
+    }
+
     return(
        <div className='filme-info'>
            <h1>{filmes.title}</h1>
@@ -52,9 +75,9 @@ if(loading){
            <strong>Avaliação: {filmes.vote_average} / 10</strong>
 
            <div className='area-buttons'>
-              <button>Favoritar</button>
+              <button onClick={salvarFilme}>Favoritar</button>
               <button>
-                  <a href='#'>
+                  <a target="blank" rel='external' href={`https://youtube.com/results?search_query=${filmes.title} Trailer do Filme`}>
                      Trailer 
                   </a>
               </button>
