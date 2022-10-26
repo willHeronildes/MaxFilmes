@@ -1,6 +1,8 @@
 import {useEffect, useState} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
+import { toast } from 'react-toastify';
+
 import api from '../../services/api'
 import './filme-info.css';
 
@@ -48,13 +50,13 @@ function salvarFilme(){
      const hasFilme = filmesSalvos.some((filmesSalvo)=> filmesSalvo.id === filmes.id)
 
      if(hasFilme){
-         alert("ESSE FILME JÁ EXISTE");
+         toast.warn("ESSE FILME JÁ EXISTE");
          return;
      }
 
      filmesSalvos.push(filmes);
      localStorage.setItem("@maxfilmes", JSON.stringify(filmesSalvos));
-     alert("Filme Salvo")
+     toast.success("Filme Salvo!")
 }      
 if(loading){
     return(
