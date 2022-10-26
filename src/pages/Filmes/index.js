@@ -50,7 +50,7 @@ function salvarFilme(){
      const hasFilme = filmesSalvos.some((filmesSalvo)=> filmesSalvo.id === filmes.id)
 
      if(hasFilme){
-         toast.warn("ESSE FILME JÁ EXISTE");
+         toast.warn("ESSE FILME JÁ FOI SALVO");
          return;
      }
 
